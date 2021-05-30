@@ -12,6 +12,8 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     return res.status(401).send({message: 'No authorization headers.'});
   }
 
+  console.log("Token = " + JSON.stringify(req.headers.authorization));
+
   const tokenBearer = req.headers.authorization.split(' ');
   if (tokenBearer.length != 2) {
     return res.status(401).send({message: 'Malformed token.'});
@@ -60,8 +62,6 @@ router.post('/',
     async (req: Request, res: Response) => {
       const caption = req.body.caption;
       const fileName = req.body.url; // same as S3 key name
-
-      console.log("trying to post new image...");
 
       if (!caption) {
         return res.status(400).send({message: 'Caption is required or malformed.'});
